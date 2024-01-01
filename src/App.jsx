@@ -4,19 +4,29 @@ export default function App() {
   const [enteredValue, setEnteredValue] = useState({
     title: "",
     deadline: "",
-    status: ["done", "not started", "in progress"],
+    status: "done",
   });
   const [todoList, setTodoList] = useState([]);
   const [showForm, setShowForm] = useState(true);
 
+  const formattedDate = new Date(enteredValue.deadline).toLocaleDateString(
+    navigator.language,
+    {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }
+  );
+
   function handleSubmit(e) {
     e.preventDefault();
+
     setTodoList((prevState) => {
       return [
         ...prevState,
         {
           title: enteredValue.title,
-          deadline: enteredValue.deadline,
+          deadline: formattedDate,
           status: enteredValue.status,
           id: Math.random() * 1000,
         },
@@ -25,7 +35,7 @@ export default function App() {
     setEnteredValue({
       title: "",
       deadline: "",
-      status: ["done", "not started", "in progress"],
+      status: "done",
     });
   }
 
@@ -45,7 +55,7 @@ export default function App() {
   function toggleShowForm() {
     setShowForm(false);
   }
-  
+
   return (
     <>
       {showForm && (
