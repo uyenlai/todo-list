@@ -17,6 +17,7 @@ export default function App() {
         {
           title: enteredValue.title,
           deadline: enteredValue.deadline,
+          status: enteredValue.status,
           id: Math.random() * 1000,
         },
       ];
@@ -24,7 +25,7 @@ export default function App() {
     setEnteredValue({
       title: "",
       deadline: "",
-      //status: ["done", "not started", "in progress"],
+      status: ["done", "not started", "in progress"],
     });
   }
 
@@ -44,7 +45,7 @@ export default function App() {
   function toggleShowForm() {
     setShowForm(false);
   }
-
+  
   return (
     <>
       {showForm && (
@@ -73,6 +74,17 @@ export default function App() {
               onChange={(e) => handleValueChange(e, "deadline")}
               required
             />
+          </div>
+          <div className="form-row">
+            <label>Status</label>
+            <select
+              value={enteredValue.status}
+              onChange={(e) => handleValueChange(e, "status")}
+            >
+              <option value="done">Done</option>
+              <option value="not-started">Not started</option>
+              <option value="in-progress">In progress</option>
+            </select>
           </div>
           <button className="btn">Add</button>
         </form>
