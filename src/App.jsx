@@ -7,7 +7,7 @@ export default function App() {
     status: "done",
   });
   const [todoList, setTodoList] = useState([]);
-  const [showForm, setShowForm] = useState(true);
+  const [showForm, setShowForm] = useState(false);
 
   const formattedDate = new Date(enteredValue.deadline).toLocaleDateString(
     navigator.language,
@@ -52,18 +52,30 @@ export default function App() {
     });
   }
 
+  function handleCancel() {
+    setTodoList((prevState) => {
+      return [...prevState];
+    });
+    setEnteredValue({
+      title: "",
+      deadline: "",
+      status: "done",
+    });
+    setShowForm((prevState) => !prevState);
+  }
+
   function toggleShowForm() {
-    setShowForm(false);
+    setShowForm((prevState) => !prevState);
   }
 
   return (
     <>
-      {showForm && (
+      {!showForm && (
         <button onClick={toggleShowForm} className="btn">
           Add a new todo
         </button>
       )}
-      {!showForm && (
+      {showForm && (
         <form className="new-item-form" onSubmit={handleSubmit}>
           <h1 className="header">Add new todo</h1>
           <div className="form-row">
@@ -96,7 +108,12 @@ export default function App() {
               <option value="in-progress">In progress</option>
             </select>
           </div>
-          <button className="btn">Add</button>
+          <button className="btn" type="submit">
+            Add
+          </button>
+          <button className="btn" onClick={handleCancel} type="button">
+            Cancel
+          </button>
         </form>
       )}
       <h1 className="header">To do list</h1>
