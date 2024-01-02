@@ -1,48 +1,23 @@
 import { useState } from "react";
+import DisplayTodoList from "./components/displayTodoList";
+import AddTodoForm from "./components/addTodoForm";
 
 export default function App() {
-  const [enteredValue, setEnteredValue] = useState({
-    title: "",
-    deadline: "",
-    status: "done",
-  });
   const [todoList, setTodoList] = useState([]);
-  const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(true);
 
-  const formattedDate = new Date(enteredValue.deadline).toLocaleDateString(
-    navigator.language,
-    {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    }
-  );
-
-  function handleSubmit(e) {
+  function handleSubmit(e, enteredValue) {
     e.preventDefault();
+    const newTodo = {
+      title: enteredValue.title,
+      //deadline: formattedDate,
+      deadline: enteredValue.deadline,
+      status: enteredValue.status,
+      id: Math.random() * 1000,
+    };
 
     setTodoList((prevState) => {
-      return [
-        ...prevState,
-        {
-          title: enteredValue.title,
-          deadline: formattedDate,
-          status: enteredValue.status,
-          id: Math.random() * 1000,
-        },
-      ];
-    });
-    setEnteredValue({
-      title: "",
-      deadline: "",
-      status: "done",
-    });
-  }
-
-  function handleValueChange(e, identifier) {
-    setEnteredValue({
-      ...enteredValue,
-      [identifier]: e.target.value,
+      return [...prevState, newTodo];
     });
   }
 
@@ -53,15 +28,10 @@ export default function App() {
   }
 
   function handleCancel() {
+    setShowForm((prevState) => !prevState);
     setTodoList((prevState) => {
       return [...prevState];
     });
-    setEnteredValue({
-      title: "",
-      deadline: "",
-      status: "done",
-    });
-    setShowForm((prevState) => !prevState);
   }
 
   function toggleShowForm() {
@@ -70,71 +40,18 @@ export default function App() {
 
   return (
     <>
-      {!showForm && (
+      {showForm && (
         <button onClick={toggleShowForm} className="btn">
           Add a new todo
         </button>
       )}
-      {showForm && (
-        <form className="new-item-form" onSubmit={handleSubmit}>
-          <h1 className="header">Add new todo</h1>
-          <div className="form-row">
-            <label>Title</label>
-            <input
-              type="text"
-              value={enteredValue.title}
-              onChange={(e) => handleValueChange(e, "title")}
-              required
-            />
-          </div>
-
-          <div className="form-row">
-            <label>Deadline</label>
-            <input
-              type="date"
-              value={enteredValue.deadline}
-              onChange={(e) => handleValueChange(e, "deadline")}
-              required
-            />
-          </div>
-          <div className="form-row">
-            <label>Status</label>
-            <select
-              value={enteredValue.status}
-              onChange={(e) => handleValueChange(e, "status")}
-            >
-              <option value="done">Done</option>
-              <option value="not-started">Not started</option>
-              <option value="in-progress">In progress</option>
-            </select>
-          </div>
-          <button className="btn" type="submit">
-            Add
-          </button>
-          <button className="btn" onClick={handleCancel} type="button">
-            Cancel
-          </button>
-        </form>
+      {!showForm && (
+        <AddTodoForm handleSubmit={handleSubmit} onCancel={handleCancel} />
       )}
       <h1 className="header">To do list</h1>
-      {todoList.length === 0 && <p>There is no item.</p>}
+      {todoList.length === 0 && <p>There is no to-do.</p>}
       {todoList.length > 0 && (
-        <ul className="list">
-          {todoList.map((item) => {
-            return (
-              <li key={item.id}>
-                <p>{item.title}</p>
-                <p>{item.deadline}</p>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => handleDelete(item.id)}
-                >
-                  Delete
-                </button>
-              </li>
-            );
-          })}
-        </ul>
+        <DisplayTodoList todoList={todoList} handleDelete={handleDelete} />
       )}
     </>
   );
