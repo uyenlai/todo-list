@@ -1,6 +1,6 @@
 import { useState } from "react";
-import DisplayTodoList from "./components/displayTodoList";
-import AddTodoForm from "./components/addTodoForm";
+import DisplayTodoList from "./components/displayTodoList.jsx";
+import AddTodoForm from "./components/addTodoForm.jsx";
 
 export default function App() {
   const [todoList, setTodoList] = useState([]);
@@ -9,9 +9,7 @@ export default function App() {
   function handleSubmit(e, enteredValue) {
     e.preventDefault();
 
-    setTodoList((prevState) => {
-      return [...prevState, enteredValue];
-    });
+    setTodoList((prevState) => [...prevState, enteredValue]);
   }
 
   function handleDelete(id) {
