@@ -8,15 +8,9 @@ export default function App() {
 
   function handleSubmit(e, enteredValue) {
     e.preventDefault();
-    const newTodo = {
-      title: enteredValue.title,
-      deadline: enteredValue.deadline,
-      status: enteredValue.status,
-      id: Math.random() * 1000,
-    };
 
     setTodoList((prevState) => {
-      return [...prevState, newTodo];
+      return [...prevState, enteredValue];
     });
   }
 

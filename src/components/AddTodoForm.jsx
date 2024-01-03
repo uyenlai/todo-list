@@ -1,36 +1,30 @@
-import { useState } from "react";
+import { useRef } from "react";
 
 export default function AddTodoForm({ handleSubmit, onCancel }) {
-  const [enteredValue, setEnteredValue] = useState({
-    title: "",
-    deadline: "",
-    status: "done",
-  });
-
-  function handleValueChange(e, identifier) {
-    setEnteredValue({
-      ...enteredValue,
-      [identifier]: e.target.value,
-    });
-  }
+  const titleRef = useRef("");
+  const deadlineRef = useRef("");
+  const statusRef = useRef("done");
 
   function onSubmit(e) {
-    handleSubmit(e, enteredValue);
+    const newTodo = {
+      title: titleRef.current.value,
+      deadline: deadlineRef.current.value,
+      status: statusRef.current.value,
+      id: Math.random() * 1000,
+    };
+    handleSubmit(e, newTodo);
 
-    setEnteredValue({
-      title: "",
-      deadline: "",
-      status: "done",
-    });
+    titleRef.current.value = "";
+    deadlineRef.current.value = "";
+    statusRef.current.value = "done";
   }
 
   function handleCancel() {
     onCancel();
-    setEnteredValue({
-      title: "",
-      deadline: "",
-      status: "done",
-    });
+
+    titleRef.current.value = "";
+    deadlineRef.current.value = "";
+    statusRef.current.value = "done";
   }
 
   return (
@@ -41,8 +35,7 @@ export default function AddTodoForm({ handleSubmit, onCancel }) {
         <input
           className="outline-none border border-solid border-light-blue bg-[#006699] rounded py-1 px-2 text-light-white focus:border focus:border-solid focus:border-[#66ccff]"
           type="text"
-          value={enteredValue.title}
-          onChange={(e) => handleValueChange(e, "title")}
+          ref={titleRef}
           required
         />
       </div>
@@ -52,8 +45,7 @@ export default function AddTodoForm({ handleSubmit, onCancel }) {
         <input
           className="outline-none border border-solid border-light-blue bg-[#006699] rounded py-1 px-2 text-light-white focus:border focus:border-solid focus:border-[#66ccff]"
           type="date"
-          value={enteredValue.deadline}
-          onChange={(e) => handleValueChange(e, "deadline")}
+          ref={deadlineRef}
           required
         />
       </div>
@@ -62,8 +54,7 @@ export default function AddTodoForm({ handleSubmit, onCancel }) {
         <label className="text-lg">Status</label>
         <select
           className="outline-none border border-solid border-light-blue bg-[#006699] rounded py-1 px-2 text-light-white focus:border focus:border-solid focus:border-[#66ccff]"
-          value={enteredValue.status}
-          onChange={(e) => handleValueChange(e, "status")}
+          ref={statusRef}
         >
           <option value="done">Done</option>
           <option value="not-started">Not started</option>
