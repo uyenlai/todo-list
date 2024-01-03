@@ -1,6 +1,6 @@
 import { useState } from "react";
-import AddTodoForm from "./components/addTodoForm";
-import DisplayTodoList from "./components/displayTodoList";
+import AddTodo from "./components/AddTodo.jsx";
+import DisplayTodo from "./components/DisplayTodo.jsx";
 
 export default function App() {
   const [todoList, setTodoList] = useState([]);
@@ -41,12 +41,12 @@ export default function App() {
           </button>
         )}
         {!showForm && (
-          <AddTodoForm handleSubmit={handleSubmit} onCancel={handleCancel} />
+          <AddTodo handleSubmit={handleSubmit} onCancel={handleCancel} />
         )}
         <h1 className="text-2xl font-black mt-6 mb-2">To do list</h1>
         {todoList.length === 0 && <p className="text-lg">There is no to-do.</p>}
         {todoList.length > 0 && (
-          <DisplayTodoList todoList={todoList} handleDelete={handleDelete} />
+          <DisplayTodo todoList={todoList} handleDelete={handleDelete} />
         )}
         <div className="flex items-center ml-1 h-8 mt-10">
           <p className="text-base p-4 border-l-8 border-emerald-400 h-4 flex items-center">

@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-export default function AddTodoForm({ handleSubmit, onCancel }) {
+export default function AddTodo({ handleSubmit, onCancel }) {
   const titleRef = useRef("");
   const deadlineRef = useRef("");
   const statusRef = useRef("done");

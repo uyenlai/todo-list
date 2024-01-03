@@ -1,4 +1,4 @@
-export default function DisplayTodoList({ todoList, handleDelete }) {
+export default function DisplayTodo({ todoList, handleDelete }) {
   return (
     <>
       <ul className="ml-1 p-0 list-none flex flex-col gap-1.5">
